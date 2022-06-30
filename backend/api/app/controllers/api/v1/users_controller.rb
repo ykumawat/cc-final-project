@@ -21,9 +21,9 @@ class Api::V1::UsersController < ApplicationController
 
 
   def me
-    if @current_user
-      lists = @current_user.lists
-      render json: {user: @current_user, lists: lists}, status: 201
+    if @user
+      lists = load_user_lists(@user)
+      render json: {user: @user, lists: load_user_lists}, status: 201
     else
       render json: {message: "Error"}
     end
@@ -34,6 +34,17 @@ class Api::V1::UsersController < ApplicationController
 
   def user_params
     params.permit(:email, :password, :name)
+  end
+  
+  def load_user_lists(user)
+   pref_objs = {lists: []}
+   user.user_prefs.each do |user_pref|
+      if user_pref[:list_id]
+        list = Lists.all.find(user_pref[:list_id])
+        pref_objs[:lists].push({list_info: list})
+      end
+    end
+    return pref_objs
   end
 
 end

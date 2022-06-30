@@ -1,7 +1,7 @@
 import React from 'react'
-import { loadUserPrefs } from '../../services/user'
+import { loadUserLists } from '../../services/user'
 import MyList from './MyList'
-import { deleteSavedLocation } from '../../services/user'
+import { deleteListItem } from '../../services/user'
 
 export default class UserProfileContainer extends React.Component {
 
@@ -11,13 +11,13 @@ export default class UserProfileContainer extends React.Component {
 
   deleteListItem = (item) => {
     const listItem = {list_item: item.id}
-    deleteSavedLocation(listItem)
+    deleteListItem(listItem)
     this.thisUserPrefs()
     window.location.reload()
   }
   
-  thisUserPrefs = () =>{
-    const thisUserInfo = loadUserPrefs().then((data) =>{
+  thisUserLists = () =>{
+    const thisUserInfo = loadUserLists().then((data) =>{
     this.setState({
       user: data.user.username,
       items: data.prefs.items
@@ -28,7 +28,7 @@ export default class UserProfileContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.thisUserPrefs()
+    this.thisUserLists()
   }
 
   render() {

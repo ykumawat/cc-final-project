@@ -14,11 +14,12 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import { Route, Link } from 'react-router-dom'
+import { Outlet, BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import UserContainer from './components/user/UserContainer.js'
 import Nav from './components/Nav.js'
-import { loginUser, logoutUser, loadUserPrefs, signupUser } from './services/user'
-import Authorize from './components/Authorize'
+import Test from './components/Test.js'
+import { loginUser, logoutUser, loadUserLists, signupUser } from './services/user.js'
+import Authorize from './components/Authorize.js'
 
 class App extends Component {
 
@@ -51,7 +52,7 @@ class App extends Component {
 
   componentDidMount() {
     //fetch request to backend for refresh_page method
-    loadUserPrefs().then((data) =>
+    loadUserLists().then((data) =>
     this.setState({
       user: data.user,
       isLoggedIn: true
@@ -70,8 +71,14 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <Route path="/" render={(routeProps) => <Nav onLogout={this.logout} {...routeProps}/>}/>
-          <UserContainer onLogin={this.login} signUp={this.signup} user={this.state.user}/>
+        <UserContainer onLogin={this.login} signUp={this.signup} user={this.state.user}/>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={(routeProps) => <Nav onLogout={this.logout} {...routeProps}/>}/>
+            // <Route path="/" element={Test}/>
+          </Routes>
+        </BrowserRouter>
+          
         </div>
     );
   }

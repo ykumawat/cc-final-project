@@ -1,6 +1,6 @@
 export function loginUser(loginParams) {
   const body = JSON.stringify(loginParams)
-  return fetch("http://localhost:3000/login", {
+  return fetch("http://localhost:5000/login", {
     method: 'post',
     body: body,
     headers: {
@@ -13,7 +13,7 @@ export function loginUser(loginParams) {
 
 export function signupUser(loginParams) {
   const body = JSON.stringify(loginParams)
-  return fetch("http://localhost:3000/api/v1/users", {
+  return fetch("http://localhost:5000/api/v1/users", {
     method: 'post',
     body: body,
     headers: {
@@ -29,13 +29,13 @@ export function logoutUser(){
 }
 
 // export function refreshPage() {
-//   return fetch('localhost:3000/users/me').then((resp))
+//   return fetch('localhost:5000/users/me').then((resp))
 //
 // }
 
-export function loadUserPrefs(){
+export function loadUserLists(){
   const jwt = localStorage.getItem("jwtToken")
-  return fetch("http://localhost:3000/api/v1/users/me", {
+  return fetch("http://localhost:5000/api/v1/users/me", {
     method: 'get',
     headers : {
       "Authorization": "Bearer " + jwt
@@ -43,24 +43,24 @@ export function loadUserPrefs(){
   }).then((res) => res.json())
 }
 
-export function saveLocation(locationObject){
-  const body = JSON.stringify(locationObject)
-  const jwt = localStorage.getItem("jwtToken")
-  return fetch("http://localhost:3000/api/v1/users/me", {
-    method: 'PATCH',
-    body: body,
-    headers: {
-        "Authorization": "Bearer " + jwt,
-        "Content-Type": 'application/json' //important
-    }
-  })
-    .then((res) => res.json())
-}
+// export function saveLocation(locationObject){
+//   const body = JSON.stringify(locationObject)
+//   const jwt = localStorage.getItem("jwtToken")
+//   return fetch("http://localhost:5000/api/v1/users/me", {
+//     method: 'PATCH',
+//     body: body,
+//     headers: {
+//         "Authorization": "Bearer " + jwt,
+//         "Content-Type": 'application/json' //important
+//     }
+//   })
+//     .then((res) => res.json())
+// }
 
-export function deleteSavedLocation(locationObject){
+export function deleteListItem(locationObject){
   const body = JSON.stringify(locationObject)
   const jwt = localStorage.getItem("jwtToken")
-  return fetch("http://localhost:3000/api/v1/users/me", {
+  return fetch("http://localhost:5000/api/v1/users/me", {
     method: 'DELETE',
     body: body,
     headers: {
