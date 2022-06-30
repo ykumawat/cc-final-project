@@ -1,9 +1,13 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate, only: [:create, :index]
+  skip_before_action :authorized, only: [:create, :index]
 
   def index
     @users = User.all
     render json: @users, status: 200
+  end
+  
+  def new
+    @user = User.find_or_create_by(user_params)
   end
 
   def create

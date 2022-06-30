@@ -1,43 +1,47 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate, except: [:welcome]
+  before_action :authorized, except: [:welcome]
+
+  def encode_token(payload)
+    token = JWT.encode(payload, "coding")
+  end
+
+  def auth_header
+    header = request.headers['Authorization']
+
+  end
+
+  def decoded_token
+    if auth_header
+      token = auth_header.split(" ")[1]
+      begin
+        JWT.decode(token, "coding", true, {algorithm: 'HS256'})
+      rescue JWT::DecodeError
+        [{}]
+      end
+    else
+    end
+  end
+
+  def current_user
+    if decoded_token
+      if user_id = decoded_token[0]["user_id"]
+        @user = User.find(user_id)
+      else
+      end
+    else
+    end
+  end
 
   def logged_in?
     !!current_user
   end
 
-  def current_user
-    if auth_present?
-      user = User.find(auth["user"])
-      if user
-        @current_user ||= user
-      end
-    end
+  def authorized
+    redirect_to "/welcome" unless logged_in?
   end
 
-  def encode_token(payload)
-    token = JWT.encode(payload, Rails.application.secrets.AUTH_SECRET.to_s)
-  end
-
-  def authenticate
-    if !logged_in?
-      render json: {error: "unauthorized"}, status: 401
-    else
-    end
-  end
-
-  private
-
-  def token
-    request.env["HTTP_AUTHORIZATION"].scan(/Bearer(.*)$/).flatten.last
-  end
-
-  def auth
-    Auth.decode(token)
-  end
-
-  def auth_present?
-    !!request.env.fetch("HTTP_AUTHORIZATION",
-    "").scan(/Bearer/).flatten.first
+  def welcome
+    render json: {message: "please log in"}
   end
 
 end
