@@ -19,6 +19,18 @@ def get_items():
               for row in entries]
     response = Response(json.dumps(tdlist),  mimetype='application/json')
     return response
+
+@app.route("/api/items")
+def get_items_for_list():
+    db = get_db()
+    args = request.args
+    list_id = args.get('list_id')
+    cur = db.execute('SELECT entry_id, what_to_do, due_date, status FROM entries WHERE list_id = ' + list_id).fetchall()
+    entries = cur.fetchall()
+    tdlist = [dict(entry_id=row[0], what_to_do=row[1], due_date=row[2], status=row[3], list_id=row[4])
+              for row in entries]
+    response = Response(json.dumps(tdlist),  mimetype='application/json')
+    return response
     
 @app.route("/api/lists")
 def get_lists():

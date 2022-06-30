@@ -2,20 +2,35 @@ import './App.css';
 import React, { Component } from 'react';
 import AddListContainer from './components/AddListContainer.js'
 import ShowListsContainer from './components/ShowListsContainer.js'
+import AddItemToListContainer from './components/AddItemToListContainer.js'
 
 
 class App extends Component {
   render(){
     return (
-      <div >
-        <p className="grid text-3xl text-indigo-400 font-mono justify-items-center">
-          Welcome to your To-Do list 
+      <body>
+        <div>
+        <br/>
+          <p className="py-4 grid justify-items-center text-3xl text-indigo-400 font-mono">
+            Welcome to your To-Do list 
+          </p>
+        </div>
+        
+        <div class="relative">
+          <p class="absolute left-0">
+            <br/>
+            <AddListContainer />
+            <br/>
+            <br/>
+          <p className="absolute right-0">
+            <ShowListsContainer />
+            <AddItemToListContainer />
+            <br/>
+          </p>
         </p>
-        <p className="grid justify-items-center">
-          <AddListContainer />
-          <ShowListsContainer />
-        </p>
-      </div>
+        </div>
+        
+      </body>
     )};
 }
 

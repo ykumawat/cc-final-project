@@ -7,7 +7,8 @@ class ShowListsContainer extends React.Component {
    super();
 
    this.state = {
-     lists: null
+     lists: null,
+     items: null
    }
  }
   
@@ -19,6 +20,14 @@ class ShowListsContainer extends React.Component {
     }))
   }
   
+  expandList = async (list_id) =>{
+    await fetch(`http://localhost:5001/api/items?list_id=${list_id}`)
+    .then((resp)=>resp.json())
+    .then((data) => this.setState({
+      items: data
+    }))
+  }
+  
   componentDidMount() {
     this.getLists()
   }
@@ -26,9 +35,18 @@ class ShowListsContainer extends React.Component {
   render() {
     if (this.state.lists) {
      return(
-       <div>
+       <div class="text-indigo-600">
+       Your active lists:
+       <br/>
         {this.state.lists.map((list) => (
-                <li key={list.list}>{list.list}: {list.name}</li>
+                // 
+                <div>
+                <p>{list.list}: {list.name}</p> 
+                <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"> delete list </button>
+                <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"> add item to list </button>
+                </div>
+                // </button>
+                
         ))}
        </div>
      )
